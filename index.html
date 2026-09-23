@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>CalculaNotas - Calculadora de notas</title>
-    <meta name="description" content="Calcula fácilmente la media de tus notas y descubre qué necesitas para aprobar.">
+    <title>CalculaNotas</title>
 
     <style>
         * {
@@ -17,288 +15,200 @@
         }
 
         body {
-            background: #f4f6f8;
+            background: #f2f4f7;
             color: #222;
+            padding: 30px 15px;
         }
 
-        header {
-            background: #2563eb;
-            color: white;
-            padding: 25px;
+        .contenedor {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
             text-align: center;
+            margin-bottom: 10px;
         }
 
-        header h1 {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            font-size: 17px;
-        }
-
-        main {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        .descripcion {
+            text-align: center;
+            color: #666;
             margin-bottom: 25px;
         }
 
-        h2 {
+        .tarjeta {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
             margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
 
-        .input-area {
-            display: flex;
+        .asignatura {
+            display: grid;
+            grid-template-columns: 1fr 120px;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         input {
-            flex: 1;
-            padding: 14px;
+            width: 100%;
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         button {
-            background: #2563eb;
-            color: white;
+            width: 100%;
+            padding: 13px;
             border: none;
-            padding: 14px 20px;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
+            margin-top: 8px;
         }
 
-        button:hover {
-            background: #1d4ed8;
+        .calcular {
+            background: #222;
+            color: white;
         }
 
-        .notas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .nota {
-            background: #e8efff;
-            color: #1d4ed8;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: bold;
+        .añadir {
+            background: #e9ecef;
+            color: #222;
         }
 
         .resultado {
-            background: #f0fdf4;
-            border: 2px solid #22c55e;
-            padding: 20px;
-            border-radius: 10px;
             text-align: center;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .resultado strong {
-            font-size: 35px;
-            color: #16a34a;
-        }
-
-        .acciones {
-            display: flex;
-            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
             margin-top: 15px;
         }
 
-        .borrar {
-            background: #dc2626;
+        .aprobado {
+            color: green;
         }
 
-        .borrar:hover {
-            background: #b91c1c;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-        }
-
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 28px;
-            }
-
-            .input-area {
-                flex-direction: column;
-            }
-
-            button {
-                width: 100%;
-            }
+        .suspendido {
+            color: red;
         }
     </style>
 </head>
 
 <body>
 
-<header>
+<div class="contenedor">
+
     <h1>📚 CalculaNotas</h1>
-    <p>Calcula la media de tus notas en segundos</p>
-</header>
 
-<main>
+    <p class="descripcion">
+        Calcula fácilmente tu nota media de clase.
+    </p>
 
-    <div class="card">
-        <h2>📝 Añade tus notas</h2>
+    <div class="tarjeta">
 
-        <p>Escribe una nota entre 0 y 10 y pulsa "Añadir".</p>
+        <div id="asignaturas">
 
-        <br>
+            <div class="asignatura">
+                <input type="text" placeholder="Asignatura">
+                <input type="number" placeholder="Nota" min="0" max="10" step="0.1">
+            </div>
 
-        <div class="input-area">
-            <input
-                type="number"
-                id="notaInput"
-                placeholder="Ejemplo: 7,5"
-                min="0"
-                max="10"
-                step="0.01"
-            >
+            <div class="asignatura">
+                <input type="text" placeholder="Asignatura">
+                <input type="number" placeholder="Nota" min="0" max="10" step="0.1">
+            </div>
 
-            <button onclick="anadirNota()">Añadir</button>
+            <div class="asignatura">
+                <input type="text" placeholder="Asignatura">
+                <input type="number" placeholder="Nota" min="0" max="10" step="0.1">
+            </div>
+
         </div>
 
-        <div class="notas" id="listaNotas"></div>
-
-        <div class="acciones">
-            <button onclick="calcularMedia()">📊 Calcular media</button>
-            <button class="borrar" onclick="borrarTodo()">🗑️ Borrar todo</button>
-        </div>
-
-        <div class="resultado" id="resultado">
-            <p>Tu media es:</p>
-            <strong id="media">0</strong>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>🎯 ¿Qué nota necesitas?</h2>
-
-        <p>
-            También podemos añadir una calculadora para saber
-            qué nota necesitas en el próximo examen.
-        </p>
-
-        <br>
-
-        <button onclick="alert('Esta función la añadiremos en la siguiente versión 🚀')">
-            Próximamente
+        <button class="añadir" onclick="añadirAsignatura()">
+            + Añadir asignatura
         </button>
+
+        <button class="calcular" onclick="calcularMedia()">
+            Calcular media
+        </button>
+
+        <div id="resultado" class="resultado"></div>
+
     </div>
 
-</main>
-
-<footer>
-    <p>© 2026 CalculaNotas · Gratis y sin registro</p>
-</footer>
+</div>
 
 <script>
 
-    let notas = [];
+function añadirAsignatura() {
 
-    function anadirNota() {
+    const contenedor = document.getElementById("asignaturas");
 
-        const input = document.getElementById("notaInput");
+    const nueva = document.createElement("div");
 
-        let valor = parseFloat(input.value);
+    nueva.className = "asignatura";
 
-        if (isNaN(valor) || valor < 0 || valor > 10) {
-            alert("Introduce una nota entre 0 y 10.");
-            return;
+    nueva.innerHTML = `
+        <input type="text" placeholder="Asignatura">
+        <input type="number" placeholder="Nota" min="0" max="10" step="0.1">
+    `;
+
+    contenedor.appendChild(nueva);
+}
+
+
+function calcularMedia() {
+
+    const notas = document.querySelectorAll(
+        '#asignaturas input[type="number"]'
+    );
+
+    let suma = 0;
+    let cantidad = 0;
+
+    notas.forEach(function(nota) {
+
+        if (nota.value !== "") {
+
+            let numero = parseFloat(nota.value);
+
+            if (numero >= 0 && numero <= 10) {
+                suma += numero;
+                cantidad++;
+            }
         }
-
-        notas.push(valor);
-
-        mostrarNotas();
-
-        input.value = "";
-        input.focus();
-    }
-
-    function mostrarNotas() {
-
-        const lista = document.getElementById("listaNotas");
-
-        lista.innerHTML = "";
-
-        notas.forEach(function(nota, indice) {
-
-            const elemento = document.createElement("div");
-
-            elemento.className = "nota";
-
-            elemento.innerHTML =
-                nota.toLocaleString("es-ES") +
-                " <span onclick='eliminarNota(" + indice + ")' style='cursor:pointer;'>✕</span>";
-
-            lista.appendChild(elemento);
-        });
-    }
-
-    function eliminarNota(indice) {
-
-        notas.splice(indice, 1);
-
-        mostrarNotas();
-    }
-
-    function calcularMedia() {
-
-        if (notas.length === 0) {
-            alert("Añade al menos una nota.");
-            return;
-        }
-
-        let suma = 0;
-
-        notas.forEach(function(nota) {
-            suma += nota;
-        });
-
-        let media = suma / notas.length;
-
-        document.getElementById("media").textContent =
-            media.toFixed(2).replace(".", ",");
-
-        document.getElementById("resultado").style.display = "block";
-    }
-
-    function borrarTodo() {
-
-        notas = [];
-
-        mostrarNotas();
-
-        document.getElementById("resultado").style.display = "none";
-    }
-
-    document.getElementById("notaInput").addEventListener("keydown", function(event) {
-
-        if (event.key === "Enter") {
-            anadirNota();
-        }
-
     });
+
+    const resultado = document.getElementById("resultado");
+
+    if (cantidad === 0) {
+
+        resultado.textContent = "Introduce alguna nota.";
+        resultado.className = "resultado";
+
+        return;
+    }
+
+    const media = suma / cantidad;
+
+    if (media >= 5) {
+
+        resultado.textContent =
+            "Media: " + media.toFixed(2) + " — ¡Aprobado! ✅";
+
+        resultado.className = "resultado aprobado";
+
+    } else {
+
+        resultado.textContent =
+            "Media: " + media.toFixed(2) + " — Suspendido ❌";
+
+        resultado.className = "resultado suspendido";
+    }
+}
 
 </script>
 
